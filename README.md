@@ -1,4 +1,4 @@
-# ValuelabsAssessment
+# ValuelabsAssessment - .Net Core 3.1
 This is the repository for Valuelabs task completion
 # Console Appliaction: AssessmentClientApp
 
