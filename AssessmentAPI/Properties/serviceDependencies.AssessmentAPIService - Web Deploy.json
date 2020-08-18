@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "mssql1": {
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroup')]/providers/Microsoft.Sql/servers/ramkyazuredatabase/databases/AssessmentDB",
+      "type": "mssql.azure",
+      "connectionId": "ConnectionString",
+      "secretStore": "AzureAppSettings"
+    }
+  }
+}

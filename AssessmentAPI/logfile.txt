@@ -1,0 +1,6 @@
+Data Time:18-08-2020 16:03:23
+Exception Name:Microsoft.EntityFrameworkCore.DbUpdateException
+Event Name:AddCustomer
+Class Name:DataRepository.cs
+Message:Violation of PRIMARY KEY constraint 'PK__Customer__8CB286991756689B'. Cannot insert duplicate key in object 'dbo.Customers'. The duplicate key value is (501).
+The statement has been terminated.
