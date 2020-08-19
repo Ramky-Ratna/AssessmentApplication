@@ -5,6 +5,9 @@ This is the repository for Valuelabs task completion
 It is console appliaction which runs on client mechine to Process the text file from the current Directory.
 
 This applicatin will take 2 command line Arguments FileName and minimumSalesAmount
+Currently I have two files one for successful insert and Anthor for Failed case
+  1. SuccessFile
+  2. TextFile1
 
 After processing the text file it will consume the WEB API service to insert the customer details in AZure SQL DB.
 
