@@ -55,6 +55,7 @@ namespace AssessmentApplication
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
+                _telemetryClient.TrackTrace(ex.Message);
                 _telemetryClient.TrackException(ex);
                 services.LogFile(ex.GetType().ToString(), "MainMethod", "Program.cs", ex.Message.ToString());
             }
@@ -81,7 +82,6 @@ namespace AssessmentApplication
             }
             catch(Exception ex)
             {
-                Console.WriteLine(ex.Message);
                 throw ex;
             }
             
@@ -128,7 +128,6 @@ namespace AssessmentApplication
             }
             catch(Exception ex)
             {
-                Console.WriteLine(ex.Message);
                 throw ex;
             }            
         }
