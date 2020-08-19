@@ -3,6 +3,7 @@ using DataService.Models;
 using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -19,19 +20,15 @@ namespace AssessmentApplication
     public class Program
     {
         private static TelemetryClient _telemetryClient;
-        public static IDataRepository _dataRepository;
+        private static IServiceProvider _serviceProvider;
 
-        public Program(DataRepository dataRepository)
-        {
-            _dataRepository = new DataRepository();
-        }
-
-        /// <summary>
         /// Main method
         /// </summary>
         /// <param name="args">string arguments</param>
         static void Main(string[] args)
         {
+            RegisterServices();
+            var services = _serviceProvider.GetService<IDataRepository>();
             try
             {
                 TelemetryConfiguration teleconfiguration = TelemetryConfiguration.CreateDefault();
@@ -58,9 +55,11 @@ namespace AssessmentApplication
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-             //_dataRepository.LogFile(ex.GetType().ToString(), "MainMethod", "Program.cs", ex.InnerException.Message.ToString());
+                _telemetryClient.TrackException(ex);
+                services.LogFile(ex.GetType().ToString(), "MainMethod", "Program.cs", ex.Message.ToString());
             }
-            
+            _telemetryClient.TrackTrace("Main method execution Ended");
+            DisposeServices();
         }
 
         /// <summary>
@@ -83,7 +82,7 @@ namespace AssessmentApplication
             catch(Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                //_dataRepository.LogFile(ex.GetType().ToString(), "PostEvent_data", "Program.cs", ex.InnerException.Message.ToString());
+                throw ex;
             }
             
         }
@@ -131,8 +130,33 @@ namespace AssessmentApplication
             {
                 Console.WriteLine(ex.Message);
                 throw ex;
-                //_dataRepository.LogFile(ex.Message.ToString(), "Process_TextFiles", "Program.cs", ex.Message.ToString());
             }            
+        }
+
+        /// <summary>
+        /// Register Services
+        /// </summary>
+        private static void RegisterServices()
+        {
+            var collection = new ServiceCollection();
+            collection.AddScoped<IDataRepository, DataRepository>();
+            
+            _serviceProvider = collection.BuildServiceProvider();
+        }
+
+        /// <summary>
+        /// Dispose Service
+        /// </summary>
+        private static void DisposeServices()
+        {
+            if (_serviceProvider == null)
+            {
+                return;
+            }
+            if (_serviceProvider is IDisposable)
+            {
+                ((IDisposable)_serviceProvider).Dispose();
+            }
         }
     }
 }
